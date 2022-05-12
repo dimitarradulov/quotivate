@@ -1,8 +1,12 @@
+import { Fragment } from 'react';
+
+import MainHeader from './components/MainHeader';
+
 function App() {
   return (
-    <div>
-      <h1>Hello World!</h1>
-    </div>
+    <Fragment>
+      <MainHeader />
+    </Fragment>
   );
 }
 
