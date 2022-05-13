@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,71 +10,47 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 
-const pages = ['All Quotes', 'Add Quote'];
+import logo from '../../assets/logo.svg';
+
+const pages = [
+  { name: 'All Quotes', link: '/quotes/all' },
+  { name: 'Add Quote', link: '/quotes/add' },
+];
 
 const MainHeader = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const history = useHistory();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (event) => {
     setAnchorElNav(null);
+
+    pages.forEach((page) => {
+      if (event.target.innerText.toLowerCase() === page.name.toLowerCase()) {
+        history.push(`${page.link}`);
+      }
+    });
   };
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-          <Box
-            sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}
-          >
-            <StickyNote2Icon
-              sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
-            />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.15rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              QUOTIVATE
-            </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Link to="/">
+              <img
+                src={logo}
+                alt="logo"
+                draggable="false"
+                style={{ width: '150px' }}
+              />
+            </Link>
           </Box>
 
-          <StickyNote2Icon
-            sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
-          />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.15rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            QUOTIVATE
-          </Typography>
           <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -104,8 +81,8 @@ const MainHeader = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -115,11 +92,11 @@ const MainHeader = () => {
           >
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.name}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>
